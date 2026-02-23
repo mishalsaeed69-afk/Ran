@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>الدفع | شراريب ران</title>
+  <meta name="description" content="صفحة الدفع وإتمام الطلب — شراريب ران" />
+  <style>
+    :root{
+      --bg:#ffffff; --text:#0f172a; --muted:#64748b;
+      --line:#e2e8f0; --soft:#f8fafc; --primary:#111827; --primary2:#0b1220;
+      --radius:16px; --shadow: 0 10px 30px rgba(2,6,23,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial; background:var(--bg); color:var(--text);}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 18px}
+    .topbar{border-bottom:1px solid var(--line);background:#fff}
+    .topbar .row{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#111827,#0ea5e9);color:#fff;font-weight:900}
+    .brand b{font-size:16px}
+    .muted{color:var(--muted);font-weight:700}
+    .btn{
+      border:1px solid var(--line); background:#fff; color:var(--text);
+      padding:11px 14px;border-radius:12px;font-weight:900;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      transition:.15s;
+    }
+    .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    .btn.primary:hover{background:var(--primary2)}
+    .btn:hover{transform:translateY(-1px)}
+    .page{padding:22px 0}
+    .grid{display:grid;grid-template-columns: 1.15fr .85fr;gap:14px;align-items:start}
+    .card{
+      border:1px solid var(--line);border-radius:var(--radius);background:#fff;
+      box-shadow:var(--shadow);padding:16px;
+    }
+    h1{margin:0 0 6px;font-size:22px}
+    .field{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+    label{font-weight:900}
+    input,select,textarea{
+      border:1px solid var(--line);border-radius:12px;padding:12px 12px;
+      font-weight:800;outline:none;background:#fff;
+    }
+    textarea{min-height:90px;resize:vertical}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .paymethods{display:grid;gap:10px;margin-top:12px}
+    .pm{
+      border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--soft);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer
+    }
+    .pm input{transform:scale(1.15)}
+    .pm b{display:block}
+    .pm span{display:block;color:var(--muted);font-size:13px;font-weight:700}
+    .summary-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line)}
+    .summary-row:last-child{border-bottom:none}
+    .items{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+    .item{border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;justify-content:space-between;gap:10px}
+    .item b{display:block}
+    .note{font-size:13px;color:var(--muted);font-weight:700;line-height:1.8}
+    .footer{border-top:1px solid var(--line);margin-top:16px;padding:16px 0;color:var(--muted);font-weight:700}
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container">
+      <div class="row">
+        <div class="brand">
+          <div class="logo">SR</div>
+          <div>
+            <b>شراريب ران</b>
+            <div class="muted">إتمام الطلب والدفع</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="btn" href="index.html">رجوع للمتجر</a>
+          <button class="btn" onclick="clearCart()">تفريغ السلة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="page">
+    <div class="container">
+      <div class="grid">
+
+        <!-- left: form -->
+        <section class="card">
+          <h1>بيانات العميل</h1>
+          <div class="muted">املأ البيانات ثم اختر طريقة الدفع واضغط “تأكيد الطلب”.</div>
+
+          <div class="two">
+            <div class="field">
+              <label>الاسم</label>
+              <input id="name" placeholder="مثال: نواف" autocomplete="name" />
+            </div>
+            <div class="field">
+              <label>رقم الجوال</label>
+              <input id="phone" placeholder="05XXXXXXXX" inputmode="tel" />
+            </div>
+          </div>
+
+          <div class="two">
+            <div class="field">
+              <label>المدينة</label>
+              <input id="city" placeholder="الرياض" />
+            </div>
+            <div class="field">
+              <label>العنوان المختصر</label>
+              <input id="address" placeholder="حي، شارع، رقم..." />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>ملاحظات (اختياري)</label>
+            <textarea id="notes" placeholder="أي ملاحظة للتسليم..."></textarea>
+          </div>
+
+          <hr style="border:none;border-top:1px solid var(--line);margin:16px 0">
+
+          <h1 style="font-size:18px">طريقة الدفع</h1>
+          <div class="paymethods">
+            <label class="pm">
+              <div>
+                <b>الدفع عند الاستلام</b>
+                <span>أكثر خيار بسيط وسريع</span>
+              </div>
+              <input type="radio" name="pm" value="COD" checked />
+            </label>
+
+            <label class="pm">
+              <div>
+                <b>تحويل بنكي</b>
+                <span>سيظهر لك رقم الطلب لإرفاقه بالتحويل</span>
+              </div>
+              <input type="radio" name="pm" value="BANK" />
+            </label>
+
+            <label class="pm">
+              <div>
+                <b>بطاقة (واجهة فقط حالياً)</b>
+                <span>جاهزة للربط مع بوابة دفع لاحقاً</span>
+              </div>
+              <input type="radio" name="pm" value="CARD" />
+            </label>
+          </div>
+
+          <div id="cardBox" style="display:none;margin-top:12px">
+            <div class="two">
+              <div class="field">
+                <label>رقم البطاقة</label>
+                <input placeholder="0000 0000 0000 0000" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label>الاسم على البطاقة</label>
+                <input placeholder="NAME" />
+              </div>
+            </div>
+            <div class="two">
+              <div class="field">
+                <label>انتهاء</label>
+                <input placeholder="MM/YY" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label>CVV</label>
+                <input placeholder="123" inputmode="numeric" />
+              </div>
+            </div>
+            <div class="note">* هذه واجهة فقط. الربط الحقيقي يحتاج بوابة دفع (Tap/Moyasar/etc).</div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+            <button class="btn primary" onclick="placeOrder()">تأكيد الطلب</button>
+            <button class="btn" onclick="sendWhatsApp()">إرسال الطلب عبر واتساب</button>
+          </div>
+
+          <div class="note" style="margin-top:10px">
+            ✅ جميع المنتجات: <b>فري سايز</b> — لا تحتاج اختيار مقاس.
+          </div>
+        </section>
+
+        <!-- right: summary -->
+        <aside class="card">
+          <h1>ملخص الطلب</h1>
+          <div class="muted">تأكد من المنتجات والكمية قبل التأكيد.</div>
+
+          <div class="items" id="items"></div>
+
+          <div style="margin-top:12px">
+            <div class="summary-row">
+              <span class="muted">الإجمالي</span>
+              <b id="total">0.00 ر.س</b>
+            </div>
+            <div class="summary-row">
+              <span class="muted">الشحن</span>
+              <b>يُحدد لاحقاً</b>
+            </div>
+            <div class="summary-row">
+              <span class="muted">المقاس</span>
+              <b>فري سايز</b>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:10px">
+            إذا السلة فاضية ارجع للمتجر وأضف منتجات.
+          </div>
+        </aside>
+
+      </div>
+
+      <div class="footer">
+        © <span id="year"></span> شراريب ران
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const LS_KEY = "sharareeb_run_cart_v1";
+    const WHATSAPP_NUMBER = "966500000000"; // غيّره لاحقاً
+
+    const products = {
+      white: { id:"white", name:"جورب أبيض", price:9.99, color:"أبيض", size:"فري سايز" },
+      black: { id:"black", name:"جورب أسود", price:9.99, color:"أسود", size:"فري سايز" },
+    };
+
+    function getCart(){
+      try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }catch(e){ return []; }
+    }
+    function setCart(cart){ localStorage.setItem(LS_KEY, JSON.stringify(cart)); }
+
+    function totals(cart){
+      let total=0;
+      cart.forEach(i=>{
+        const p = products[i.id]; if(!p) return;
+        total += p.price * i.qty;
+      });
+      return total;
+    }
+
+    function render(){
+      const cart = getCart();
+      const box = document.getElementById("items");
+      box.innerHTML = "";
+
+      if(cart.length === 0){
+        box.innerHTML = `<div class="note">السلة فاضية. <a href="index.html" style="text-decoration:underline">ارجع للمتجر</a></div>`;
+      } else {
+        cart.forEach(i=>{
+          const p = products[i.id]; if(!p) return;
+          const div = document.createElement("div");
+          div.className = "item";
+          div.innerHTML = `
+            <div>
+              <b>${p.name}</b>
+              <div class="muted">اللون: ${p.color} • المقاس: ${p.size}</div>
+              <div class="muted">السعر: ${p.price.toFixed(2)} ر.س</div>
+            </div>
+            <div style="text-align:left">
+              <b>× ${i.qty}</b>
+              <div class="muted">${(p.price*i.qty).toFixed(2)} ر.س</div>
+            </div>
+          `;
+          box.appendChild(div);
+        });
+      }
+
+      document.getElementById("total").textContent = totals(cart).toFixed(2) + " ر.س";
+    }
+
+    function clearCart(){
+      setCart([]);
+      render();
+      alert("تم تفريغ السلة.");
+    }
+
+    function getPaymentMethod(){
+      const pm = document.querySelector('input[name="pm"]:checked');
+      return pm ? pm.value : "COD";
+    }
+
+    function validate(){
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const cart = getCart();
+
+      if(cart.length === 0) return "السلة فاضية.";
+      if(!name) return "اكتب الاسم.";
+      if(!phone) return "اكتب رقم الجوال.";
+      if(!city) return "اكتب المدينة.";
+      if(!address) return "اكتب العنوان المختصر.";
+      return null;
+    }
+
+    function buildOrderText(orderId){
+      const cart = getCart();
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const notes = document.getElementById("notes").value.trim();
+      const pm = getPaymentMethod();
+
+      let pmLabel = pm === "COD" ? "الدفع عند الاستلام" : pm === "BANK" ? "تحويل بنكي" : "بطاقة (واجهة)";
+      let lines = [];
+      lines.push(`طلب جديد — شراريب ران`);
+      lines.push(`رقم الطلب: ${orderId}`);
+      lines.push(`الاسم: ${name}`);
+      lines.push(`الجوال: ${phone}`);
+      lines.push(`المدينة: ${city}`);
+      lines.push(`العنوان: ${address}`);
+      lines.push(`طريقة الدفع: ${pmLabel}`);
+      lines.push(`----- المنتجات -----`);
+
+      cart.forEach(i=>{
+        const p = products[i.id]; if(!p) return;
+        lines.push(`${p.name} | اللون: ${p.color} | المقاس: ${p.size} | الكمية: ${i.qty} | ${ (p.price*i.qty).toFixed(2) } ر.س`);
+      });
+
+      const total = totals(cart).toFixed(2);
+      lines.push(`-----`);
+      lines.push(`الإجمالي: ${total} ر.س`);
+      if(notes) lines.push(`ملاحظات: ${notes}`);
+
+      return lines.join("\n");
+    }
+
+    function sendWhatsApp(){
+      const err = validate();
+      if(err){ alert(err); return; }
+
+      const orderId = "SR-" + Math.floor(100000 + Math.random()*900000);
+      const text = buildOrderText(orderId);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
+    }
+
+    function placeOrder(){
+      const err = validate();
+      if(err){ alert(err); return; }
+
+      const orderId = "SR-" + Math.floor(100000 + Math.random()*900000);
+
+      // حفظ الطلب محلياً (للنجاح)
+      const payload = {
+        orderId,
+        total: totals(getCart()).toFixed(2),
+        pm: getPaymentMethod(),
+        createdAt: new Date().toISOString()
+      };
+      localStorage.setItem("sharareeb_run_last_order_v1", JSON.stringify(payload));
+
+      // (اختياري) تفريغ السلة بعد الطلب
+      setCart([]);
+
+      // تحويل لصفحة النجاح
+      window.location.href = "success.html";
+    }
+
+    // Show card box when selected
+    document.addEventListener("change", ()=>{
+      const pm = getPaymentMethod();
+      document.getElementById("cardBox").style.display = (pm === "CARD") ? "block" : "none";
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    render();
+  </script>
+</body>
+</html>
