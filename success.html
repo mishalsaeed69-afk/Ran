@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>تم الطلب | شراريب ران</title>
+  <style>
+    :root{--bg:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#111827;--radius:16px}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial;background:var(--bg);color:var(--text)}
+    .container{max-width:900px;margin:0 auto;padding:0 18px}
+    .card{margin:26px auto;border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:#fff}
+    h1{margin:0 0 8px}
+    .muted{color:var(--muted);font-weight:700;line-height:1.9}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#f8fafc;font-weight:900}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:#fff;color:var(--text);
+      padding:11px 14px;border-radius:12px;font-weight:900;cursor:pointer;text-decoration:none}
+    .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="pill">✅ تم استلام طلبك</div>
+      <h1>شكراً لك من شراريب ران!</h1>
+      <div class="muted" id="details">جارٍ تحميل تفاصيل الطلب...</div>
+
+      <div class="row">
+        <a class="btn primary" href="index.html">العودة للمتجر</a>
+        <a class="btn" href="checkout.html">إجراء طلب جديد</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const data = localStorage.getItem("sharareeb_run_last_order_v1");
+    const el = document.getElementById("details");
+
+    if(!data){
+      el.textContent = "ما لقينا تفاصيل الطلب، لكن طلبك تم. تقدر ترجع للمتجر.";
+    } else {
+      const o = JSON.parse(data);
+      const pmLabel = o.pm === "COD" ? "الدفع عند الاستلام" : o.pm === "BANK" ? "تحويل بنكي" : "بطاقة (واجهة)";
+      el.innerHTML = `
+        رقم الطلب: <b>${o.orderId}</b><br>
+        الإجمالي: <b>${o.total} ر.س</b><br>
+        طريقة الدفع: <b>${pmLabel}</b><br>
+        <span style="color:#64748b;font-weight:700">سنقوم بالتواصل لتأكيد الطلب.</span>
+      `;
+    }
+  </script>
+</body>
+</html>
