@@ -436,5 +436,17 @@
     document.getElementById("year").textContent = new Date().getFullYear();
     renderCartBadge();
   </script>
+  <!-- Rubat AI Chatbot -->
+<script src="https://dashboard.rubatai.com/ai-customer-chatbot/chatbot-widget.js"></script>
+
+<script>
+ChatbotWidget.init({
+  companyId: 14,
+  apiEndpoint: "https://dashboard.rubatai.com/api/generate",
+  saveUserEndpoint: "https://dashboard.rubatai.com/api/save_user",
+  saveChatHistoryEndpoint: "https://dashboard.rubatai.com/api/save_chat_history/",
+  configEndpoint: "https://dashboard.rubatai.com/api/config"
+});
+</script>
 </body>
 </html>
