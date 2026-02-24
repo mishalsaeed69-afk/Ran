@@ -131,47 +131,7 @@
               <input type="radio" name="pm" value="COD" checked />
             </label>
 
-            <label class="pm">
-              <div>
-                <b>تحويل بنكي</b>
-                <span>سيظهر لك رقم الطلب لإرفاقه بالتحويل</span>
-              </div>
-              <input type="radio" name="pm" value="BANK" />
-            </label>
-
-            <label class="pm">
-              <div>
-                <b>بطاقة (واجهة فقط حالياً)</b>
-                <span>جاهزة للربط مع بوابة دفع لاحقاً</span>
-              </div>
-              <input type="radio" name="pm" value="CARD" />
-            </label>
-          </div>
-
-          <div id="cardBox" style="display:none;margin-top:12px">
-            <div class="two">
-              <div class="field">
-                <label>رقم البطاقة</label>
-                <input placeholder="0000 0000 0000 0000" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label>الاسم على البطاقة</label>
-                <input placeholder="NAME" />
-              </div>
-            </div>
-            <div class="two">
-              <div class="field">
-                <label>انتهاء</label>
-                <input placeholder="MM/YY" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label>CVV</label>
-                <input placeholder="123" inputmode="numeric" />
-              </div>
-            </div>
-            <div class="note">* هذه واجهة فقط. الربط الحقيقي يحتاج بوابة دفع (Tap/Moyasar/etc).</div>
-          </div>
-
+          
           <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
             <button class="btn primary" onclick="placeOrder()">تأكيد الطلب</button>
             <button class="btn" onclick="sendWhatsApp()">إرسال الطلب عبر واتساب</button>
